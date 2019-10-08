@@ -50,7 +50,7 @@ class BasicBlock(nn.Module):
 
 class MyResNet(nn.Module):
     
-    def __init__(self, block, layers, num_classes, inplanes):
+    def __init__(self, block, layers, num_classes, inplanes, width):
         
         super(MyResNet, self).__init__()
         
@@ -72,7 +72,8 @@ class MyResNet(nn.Module):
         
         self.mp = nn.MaxPool2d(kernel_size=2)
         
-        self.fc = nn.Linear(256*2*2, num_classes)
+        last_width = int(width / (2**4))
+        self.fc = nn.Linear(256*last_width*last_width, num_classes)
         
     def _make_layer(self, block, planes, blocks, stride=1):
         

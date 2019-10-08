@@ -74,7 +74,7 @@ train_dataset = datasets.ImageFolder(train_dir, transform=transform_train)
 
 
 # To check the index for each classes
-print(train_dataset.class_to_idx)
+# print(train_dataset.class_to_idx)
 train_loader = torch.utils.data.DataLoader(train_dataset, batch_size=batch_size, 
                                            shuffle=True, num_workers=8)
 # Your own directory to the validation folder of tiyimagenet
@@ -90,19 +90,19 @@ else:
 
 val_dataset = datasets.ImageFolder(val_dir, transform=transforms.ToTensor())
 # To check the index for each classes
-print(val_dataset.class_to_idx)
+# print(val_dataset.class_to_idx)
 val_loader = torch.utils.data.DataLoader(val_dataset, batch_size=batch_size, 
                                          shuffle=False, num_workers=8)
 
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 print(device)
 
-model = MyResNet.MyResNet(MyResNet.BasicBlock, [2, 4, 4, 2], 100, 3).to(device)
+model = MyResNet.MyResNet(MyResNet.BasicBlock, [2, 4, 4, 2], 200, 3, 64).to(device)
 
 criterion = nn.CrossEntropyLoss()
 optimizer = torch.optim.Adam(model.parameters(), lr=learning_rate)
 
-total_step = len(trainloader)
+total_step = len(train_loader)
 
 acc_df = pd.DataFrame(columns=["Train Accuracy", "Test Accuracy"])
 for epoch in range(num_epochs):
@@ -116,7 +116,7 @@ for epoch in range(num_epochs):
                            ignore_index=True)
 
 print("\nThe accuracy on the test set is: {:.2} %"
-        .format(calculate_accuracy(model, testloader)))
+        .format(MyUtils.calculate_accuracy(model, testloader)))
 
 # save the accuracy
 acc_df.to_csv("./accuracy_tinyimagenet.csv")
