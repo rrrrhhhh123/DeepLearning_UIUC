@@ -30,7 +30,7 @@ import MyResNet
 import MyUtils
 
 # hyperparameters
-num_epochs = 50
+num_epochs = 30
 batch_size = 128
 learning_rate = 0.001
 
@@ -114,6 +114,8 @@ for epoch in range(num_epochs):
     acc_df = acc_df.append({"Train Accuracy": train_acc,
                             "Test Accuracy": test_acc},
                            ignore_index=True)
+
+    acc_df.to_csv("./accuracy_tinyimagenet.csv")
 
 print("\nThe accuracy on the test set is: {:.2} %"
         .format(MyUtils.calculate_accuracy(model, testloader)))
