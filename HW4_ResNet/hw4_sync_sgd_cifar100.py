@@ -80,7 +80,7 @@ def calculate_accuracy(data_loader):
     with torch.no_grad():
         model.eval()
         for batch_idx, (X_test_batch, Y_test_batch) in enumerate(data_loader):
-            X_test_batch, Y_test_batch = X_test_batch.to('cuda'),Y_test_batch.to('cuda')
+            X_test_batch, Y_test_batch = X_test_batch.cuda(),Y_test_batch.cuda() # old version of pytorch(0.3)
             
             outputs = model(X_test_batch)
             _, predicted = torch.max(outputs.data, 1)
@@ -100,7 +100,7 @@ def run(rank, size):
 
     torch.manual_seed(1234)
 
-    model = MyResNet.MyResNet(MyResNet.BasicBlock, [2, 4, 4, 2], 100, 3, 32).to('cuda')
+    model = MyResNet.MyResNet(MyResNet.BasicBlock, [2, 4, 4, 2], 100, 3, 32).cuda()
     optimizer = optim.SGD(model.parameters(), lr=learning_rate)
     criterion = nn.CrossEntropyLoss()
     
@@ -112,7 +112,7 @@ def run(rank, size):
         epoch_loss = 0.0
         model.train()
         for batch_idx, (X_train_batch, Y_train_batch) in enumerate(trainloader):
-            X_train_batch, Y_train_batch = X_train_batch.to('cuda'), Y_train_batch.to('cuda')
+            X_train_batch, Y_train_batch = X_train_batch.cuda(), Y_train_batch.cuda()
             optimizer.zero_grad()
             
             # Forward Pass
