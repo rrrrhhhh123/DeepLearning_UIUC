@@ -102,7 +102,8 @@ def run(rank, size):
 
     model = MyResNet.MyResNet(MyResNet.BasicBlock, [2, 4, 4, 2], 100, 3, 32).to('cuda')
     optimizer = optim.SGD(model.parameters(), lr=learning_rate)
-
+    criterion = nn.CrossEntropyLoss()
+    
     if (rank == 0):
         acc_df = pd.DataFrame(columns=["Train Accuracy", "Test Accuracy"])
 
