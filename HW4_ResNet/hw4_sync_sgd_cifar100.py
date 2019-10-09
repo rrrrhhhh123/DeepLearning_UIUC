@@ -17,6 +17,7 @@ import torch.distributed as dist
 import os
 import subprocess
 from mpi4py import MPI
+import MyResNet
 
 # Code for iniitialization pytorch distributed
 cmd = "/sbin/ifconfig"
@@ -44,7 +45,7 @@ dist.init_process_group(backend, rank=rank, world_size=num_nodes)
 
 dtype = torch.FloatTensor
 
-import MyResNet
+
 
 # hyperparameters
 num_epochs = 50
@@ -108,6 +109,7 @@ def run(rank, size):
     for epoch in range(num_epochs):
 
         epoch_loss = 0.0
+        model.train()
         for batch_idx, (X_train_batch, Y_train_batch) in enumerate(trainloader):
             X_train_batch, Y_train_batch = X_train_batch.to('cuda'), Y_train_batch.to('cuda')
             optimizer.zero_grad()
